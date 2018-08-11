@@ -53,7 +53,11 @@ namespace HotelManagementSystem.Controllers
                 if (!ModelState.IsValid)
                     return Content(HttpStatusCode.BadRequest, "Model state is invalid");
 
-                hotel.Id = ++_count;
+                var flag = (_hotels.Find(hotelList => hotelList.Id == hotel.Id) != null) ? true : false;
+                if (flag)
+                    return Content(HttpStatusCode.BadRequest, "DuplicateEntry");
+                else
+                    _hotels.Add(hotel);
                 _hotels.Add(hotel);
                 return Ok(_hotels);
             }
